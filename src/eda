@@ -1,0 +1,16 @@
+import pandas as pd
+import plotly.express as px
+
+def accidentes_por_hora(df):
+    return px.histogram(df, x="hora", nbins=24, title="Accidentes por Hora")
+
+def accidentes_por_dia(df):
+    order = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+    return px.histogram(df, x="dia_semana", category_orders={"dia_semana": order},
+                        title="Accidentes por Día de la Semana")
+
+def accidentes_por_vehiculo(df):
+    if "tipo_vehiculo" in df.columns:
+        return px.bar(df["tipo_vehiculo"].value_counts().reset_index(),
+                      x="index", y="tipo_vehiculo",
+                      title="Accidentes por Tipo de Vehículo")
