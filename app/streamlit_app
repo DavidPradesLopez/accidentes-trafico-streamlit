@@ -1,1 +1,52 @@
+import streamlit as st
+import pandas as pd
+from streamlit_folium import st_folium
 
+from src.limpieza import limpiar_datos, cargar_datos
+from src.eda import accidentes_por_hora, accidentes_por_dia, accidentes_por_vehiculo
+from src.mapas import mapa_calor
+
+st.set_page_config(page_title="Análisis de Accidentes de Tráfico", layout="wide")
+
+st.title("🚨 Análisis de Accidentes de Tráfico en España")
+
+# Cargar datos
+st.sidebar.header("📂 Datos")
+archivo = st.sidebar.file_uploader("Sube un archivo CSV", type=["csv"])
+
+if archivo:
+    df = cargar_datos(archivo)
+    df = limpiar_datos(df)
+
+    st.subheader("Vista previa de los datos")
+    st.dataframe(df.head())
+
+    # Filtros
+    st.sidebar.header("🎛 Filtros")
+    anios = st.sidebar.multiselect("Año", sorted(df["anio"].unique()))
+    meses = st.sidebar.multiselect("Mes", sorted(df["mes"].unique()))
+
+    df_filtrado = df.copy()
+    if anios:
+        df_filtrado = df_filtrado[df_filtrado["anio"].isin(anios)]
+    if meses:
+        df_filtrado = df_filtrado[df_filtrado["mes"].isin(meses)]
+
+    st.subheader("📊 Gráficos")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.plotly_chart(accidentes_por_hora(df_filtrado), use_container_width=True)
+
+    with col2:
+        st.plotly_chart(accidentes_por_dia(df_filtrado), use_container_width=True)
+
+    st.plotly_chart(accidentes_por_vehiculo(df_filtrado), use_container_width=True)
+
+    st.subheader("🗺 Mapa de calor de accidentes")
+
+    mapa = mapa_calor(df_filtrado)
+    st_folium(mapa, width=900)
+else:
+    st.info("Sube un archivo CSV para comenzar.")
