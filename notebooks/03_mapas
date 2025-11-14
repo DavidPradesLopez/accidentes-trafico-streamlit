@@ -1,0 +1,19 @@
+# 03_mapas.ipynb
+
+import pandas as pd
+from src.mapas import mapa_calor
+from streamlit_folium import st_folium
+import folium
+
+# Cargar datos limpios
+df = pd.read_csv("data/cleaned/accidentes_limpios.csv")
+
+# Filtrar filas con coordenadas
+df_geo = df.dropna(subset=["latitud", "longitud"])
+
+# Crear mapa de calor
+mapa = mapa_calor(df_geo)
+
+# Mostrar mapa en Jupyter (opcional)
+mapa.save("mapa_calor.html")
+mapa
