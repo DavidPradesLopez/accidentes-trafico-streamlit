@@ -1,0 +1,24 @@
+# 02_eda.ipynb
+
+import pandas as pd
+import plotly.express as px
+from src.eda import accidentes_por_hora, accidentes_por_dia, accidentes_por_vehiculo
+
+# Cargar datos limpios
+df = pd.read_csv("data/cleaned/accidentes_limpios.csv")
+
+# Número de accidentes por hora
+fig1 = accidentes_por_hora(df)
+fig1.show()
+
+# Número de accidentes por día de la semana
+fig2 = accidentes_por_dia(df)
+fig2.show()
+
+# Accidentes por tipo de vehículo
+fig3 = accidentes_por_vehiculo(df)
+fig3.show()
+
+# Estadísticas básicas
+print(df.describe())
+print(df["periodo_dia"].value_counts())
