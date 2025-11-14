@@ -1,1 +1,40 @@
-# accidentes-trafico-streamlit
+# 🚨 Análisis de Accidentes de Tráfico (Streamlit App)
+
+Este proyecto analiza accidentes de tráfico utilizando Python, geolocalización y un dashboard interactivo creado en **Streamlit**.
+
+## 🎯 Objetivo
+Identificar:
+- Zonas con mayor siniestralidad ("puntos negros").
+- Horas y días con más accidentes.
+- Tipos de vehículo más involucrados.
+- Evolución temporal.
+
+## 🛠 Tecnologías
+- Python (Pandas, Plotly, Folium, GeoPandas)
+- Streamlit
+- Notebooks Jupyter
+- Visualización en mapas (HeatMap)
+
+## 📂 Estructura del proyecto
+accidentes-trafico-streamlit/<br>
+├── data/<br>
+├── notebooks/<br>
+├── src/<br>
+├── app/<br>
+└── README.md<br>
+
+## ▶ Ejecutar la app
+streamlit run app/streamlit_app.py
+
+## 📊 Funcionalidades
+- Filtros por año y mes  
+- Histograma por hora  
+- Histograma por día de la semana  
+- Accidentes por tipo de vehículo  
+- Mapa de calor interactivo (Folium)  
+
+## 📚 Dataset recomendado
+Puedes usar los datos abiertos de la DGT:  
+https://www.dgt.es/nuestros-servicios/datos-abiertos/
+
+---
