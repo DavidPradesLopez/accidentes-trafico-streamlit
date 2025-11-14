@@ -1,0 +1,31 @@
+import pandas as pd
+
+def cargar_datos(ruta):
+    df = pd.read_csv(ruta)
+    return df
+
+def limpiar_datos(df):
+
+    # Convertir fecha y hora
+    if "fecha" in df.columns:
+        df["fecha"] = pd.to_datetime(df["fecha"], errors="coerce")
+
+    if "hora" in df.columns:
+        df["hora"] = pd.to_numeric(df["hora"], errors="coerce")
+
+    # Nuevas columnas
+    df["anio"] = df["fecha"].dt.year
+    df["mes"] = df["fecha"].dt.month
+    df["dia_semana"] = df["fecha"].dt.day_name()
+
+    # Periodos del día
+    df["periodo_dia"] = df["hora"].apply(
+        lambda h: (
+            "Madrugada" if 0 <= h < 6 else
+            "Mañana" if 6 <= h < 12 else
+            "Tarde" if 12 <= h < 20 else
+            "Noche"
+        ) if pd.notnull(h) else None
+    )
+
+    return df
