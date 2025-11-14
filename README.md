@@ -35,6 +35,8 @@ streamlit run app/streamlit_app.py
 
 ## 📚 Dataset recomendado
 Puedes usar los datos abiertos de la DGT:  
-https://www.dgt.es/nuestros-servicios/datos-abiertos/
+https://www.dgt.es/menusecundario/dgt-en-cifras/dgt-en-cifras-resultados/dgt-en-cifras-detalle/Ficheros-de-microdatos-de-accidentes-con-victimas-2024<br><br>
+https://www.dgt.es/menusecundario/dgt-en-cifras/dgt-en-cifras-resultados/dgt-en-cifras-detalle/Datos-municipales-Siniestralidad-2023/<br><br>
+https://seguridadvial2030.dgt.es/practicas-de-interes/datos-y-conocimiento-para-una-gestion-basada-en-riesgos/Aplicacion-CIDE-Catalogo-Interactivo-de-Datos-Estadisticas-sobre-Seguridad-Vial/index.html<br>
 
 ---
