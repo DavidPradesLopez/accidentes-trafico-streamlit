@@ -2,23 +2,70 @@
 
 import pandas as pd
 import plotly.express as px
-from src.eda import accidentes_por_hora, accidentes_por_dia, accidentes_por_vehiculo
+import plotly.graph_objects as go
 
 # Cargar datos limpios
 df = pd.read_csv("data/cleaned/accidentes_limpios.csv")
 
-# Número de accidentes por hora
-fig1 = accidentes_por_hora(df)
-fig1.show()
+# --------------------------------------------------
+# 1️⃣ Heatmap: Accidentes por hora y día de la semana
+# --------------------------------------------------
 
-# Número de accidentes por día de la semana
-fig2 = accidentes_por_dia(df)
-fig2.show()
+# Crear tabla pivot
+pivot = df.pivot_table(index="dia_semana", columns="hora", values="anio", aggfunc="count").fillna(0)
 
-# Accidentes por tipo de vehículo
-fig3 = accidentes_por_vehiculo(df)
-fig3.show()
+# Asegurar orden de días
+dias_orden = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+pivot = pivot.reindex(dias_orden)
 
-# Estadísticas básicas
-print(df.describe())
-print(df["periodo_dia"].value_counts())
+fig_heatmap = go.Figure(data=go.Heatmap(
+    z=pivot.values,
+    x=pivot.columns,
+    y=pivot.index,
+    colorscale='Viridis'
+))
+fig_heatmap.update_layout(
+    title="Heatmap: Accidentes por Día y Hora",
+    xaxis_title="Hora",
+    yaxis_title="Día de la Semana"
+)
+fig_heatmap.show()
+
+# --------------------------------------------------
+# 2️⃣ Top 10 municipios con más accidentes
+# --------------------------------------------------
+
+if "municipio" in df.columns:
+    top_municipios = df["municipio"].value_counts().nlargest(10).reset_index()
+    top_municipios.columns = ["Municipio", "Accidentes"]
+
+    fig_top10 = px.bar(top_municipios, x="Municipio", y="Accidentes",
+                       title="Top 10 Municipios con Más Accidentes")
+    fig_top10.show()
+
+# --------------------------------------------------
+# 3️⃣ Boxplot: Accidentes por tipo de vía
+# --------------------------------------------------
+
+if "tipo_via" in df.columns:
+    fig_box = px.box(df, x="tipo_via", y="hora",
+                     title="Distribución de Accidentes por Tipo de Vía y Hora",
+                     points="all")
+    fig_box.show()
+
+# --------------------------------------------------
+# 4️⃣ Accidentes por periodo del día
+# --------------------------------------------------
+
+fig_periodo = px.histogram(df, x="periodo_dia", color="periodo_dia",
+                            title="Accidentes por Periodo del Día")
+fig_periodo.show()
+
+# --------------------------------------------------
+# 5️⃣ Estadísticas resumidas
+# --------------------------------------------------
+
+print("Número total de accidentes:", len(df))
+print("Accidentes por año:\n", df["anio"].value_counts().sort_index())
+print("Accidentes por día de la semana:\n", df["dia_semana"].value_counts())
+print("Accidentes por periodo del día:\n", df["periodo_dia"].value_counts())
