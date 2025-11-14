@@ -1,0 +1,11 @@
+import folium
+from folium.plugins import HeatMap
+
+def mapa_calor(df):
+    mapa = folium.Map(location=[40.4167, -3.70325], zoom_start=6)
+
+    puntos = df[["latitud", "longitud"]].dropna().values.tolist()
+
+    HeatMap(puntos, radius=10).add_to(mapa)
+
+    return mapa
